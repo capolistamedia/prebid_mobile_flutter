@@ -1,0 +1,22 @@
+PODS:
+  - Flutter (1.0.0)
+  - prebid_mobile_flutter (0.0.1):
+    - Flutter
+
+DEPENDENCIES:
+  - Flutter (from `Flutter`)
+  - prebid_mobile_flutter (from `.symlinks/plugins/prebid_mobile_flutter/ios`)
+
+EXTERNAL SOURCES:
+  Flutter:
+    :path: Flutter
+  prebid_mobile_flutter:
+    :path: ".symlinks/plugins/prebid_mobile_flutter/ios"
+
+SPEC CHECKSUMS:
+  Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
+  prebid_mobile_flutter: f5367e9c01cedfa7cadd1e0b9fd7a672868877de
+
+PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c
+
+COCOAPODS: 1.10.0
