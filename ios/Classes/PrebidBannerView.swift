@@ -35,18 +35,26 @@ class PrebidBannerView: NSObject, FlutterPlatformView, GADBannerViewDelegate {
     }
 
     private func load(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
-        Prebid.shared.prebidServerAccountId = "8a84dd34-ea31-43c5-96e5-cd8de12e5ea6"
+        let argument = call.arguments as! Dictionary<String, Any>
+        let publisherId = argument["publisherId"] as? String ?? ""
+        let adUnitId = argument["adUnitId"] as? String ?? ""
+        let configId = argument["configId"] as? String ?? ""
+        let serverHost = argument["serverHost"] as? String ?? ""
+        let adHeight = argument["adHeight"] as? Double ?? 0
+        let adWidth = argument["adWidth"] as? Double ?? 0
+
+        Prebid.shared.prebidServerAccountId = publisherId
         do {
-            try Prebid.shared.setCustomPrebidServer(url: "http://lwadm.com/openrtb2/auction")
+            try Prebid.shared.setCustomPrebidServer(url: serverHost)
         } catch  {
             print("ERROR")
         }
  
-        let adSize = CGSize(width: 320, height: 320)
-        let bannerUnit = BannerAdUnit(configId: "fotbollsthlm_mobile-mobil-1", size: adSize)
+        let adSize = CGSize(width: adWidth, height: adHeight)
+        let bannerUnit = BannerAdUnit(configId: configId, size: adSize)
         let bannerView = DFPBannerView(adSize: GADAdSizeFromCGSize(adSize))
         let request = DFPRequest()
-        bannerView.adUnitID = "/3953516/leeads-test/apptestfotbollsthlm"
+        bannerView.adUnitID = adUnitId
         bannerView.delegate = self
         bannerView.rootViewController = UIApplication.shared.delegate!.window!!.rootViewController!
         addBannerViewToView(bannerView)

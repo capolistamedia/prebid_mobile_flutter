@@ -1,9 +1,22 @@
 import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:prebid_mobile_flutter/prebid_mobile_flutter.dart';
 
 class PrebidBanner extends StatefulWidget {
-  PrebidBanner({Key key}) : super(key: key);
+  final PrebidAdSize adSize;
+  final String publisherId;
+  final String configId;
+  final String adUnitId;
+  final String serverHost;
+  /**
+   * Size
+   * publisherID
+   * configId
+   * adUnitId
+   */
+  PrebidBanner(
+      {@required this.adSize, this.adUnitId, this.configId, this.publisherId, this.serverHost});
 
   @override
   _PrebidBannerState createState() => _PrebidBannerState();
@@ -33,7 +46,13 @@ class _PrebidBannerState extends State<PrebidBanner> {
   }
 
   void _onPlatformViewCreated(int id) {
-    _controller = DFPBannerViewController._internal(id: id);
+    _controller = DFPBannerViewController._internal(
+        id: id,
+        publisherId: widget.publisherId,
+        adSize: widget.adSize,
+        configId: widget.configId,
+        adUnitId: widget.adUnitId,
+        serverHost: widget.serverHost);
     _controller._load();
     print("Platform view creatd");
   }
@@ -42,10 +61,20 @@ class _PrebidBannerState extends State<PrebidBanner> {
 class DFPBannerViewController {
   final void Function(DFPBannerViewController controller) onAdViewCreated;
   final Map<String, dynamic> customTargeting;
+  final String publisherId;
+  final PrebidAdSize adSize;
+  final String configId;
+  final String adUnitId;
+  final String serverHost;
 
   DFPBannerViewController._internal({
     this.onAdViewCreated,
     this.customTargeting,
+    this.adSize,
+    this.adUnitId,
+    this.configId,
+    this.serverHost,
+    this.publisherId,
     int id,
   }) : _channel = MethodChannel(Platform.isIOS
             ? 'plugins.ercutveckling.se/prebid_mobile_flutter/banner/$id'
@@ -58,6 +87,13 @@ class DFPBannerViewController {
   }
 
   Future<void> _load() {
-    return _channel.invokeMethod('load');
+    return _channel.invokeMethod('load', {
+      "publisherId": this.publisherId,
+      "adHeight": this.adSize.height,
+      "adWidth": this.adSize.width,
+      "configId": this.configId,
+      "adUnitId": this.adUnitId,
+      "serverHost": this.serverHost
+    });
   }
 }

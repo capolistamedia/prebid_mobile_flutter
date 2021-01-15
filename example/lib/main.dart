@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'dart:async';
 
-import 'package:flutter/services.dart';
 import 'package:prebid_mobile_flutter/prebid_mobile_flutter.dart';
 
 void main() {
@@ -31,7 +29,13 @@ class _MyAppState extends State<MyApp> {
           body: ListView(children: [
             Column(children: [
               ListTile(title: Text("THIS IS AN ARTICLE")),
-              PrebidBanner(),
+              PrebidBanner(
+                adSize: PrebidAdSize(320, 320),
+                publisherId: "8a84dd34-ea31-43c5-96e5-cd8de12e5ea6",
+                adUnitId: "/3953516/leeads-test/apptestfotbollsthlm",
+                configId: "fotbollsthlm_mobile-mobil-1",
+                serverHost: "http://lwadm.com/openrtb2/auction",
+              ),
               ListTile(title: Text("THIS IS AN ARTICLE")),
               ListTile(title: Text("THIS IS AN ARTICLE")),
               ListTile(title: Text("THIS IS AN ARTICLE")),

@@ -1,35 +1,41 @@
 package se.ercadev.prebid_mobile_flutter
 
 
-import android.content.Context
+
 import android.util.Log
-import android.view.View
-import android.view.ViewGroup
-import android.widget.LinearLayout
-import com.google.android.gms.ads.AdListener
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.AdSize
-import com.google.android.gms.ads.doubleclick.PublisherAdRequest
+
 import com.google.android.gms.ads.doubleclick.PublisherAdView
 import io.flutter.plugin.common.BinaryMessenger
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.platform.PlatformView
+
+import android.view.ViewGroup
+import android.content.Context
+import android.graphics.Color
+import android.view.View
+import android.widget.LinearLayout
+import android.widget.TextView
+import com.google.android.gms.ads.AdSize
+import com.google.android.gms.ads.MobileAds
+import com.google.android.gms.ads.doubleclick.PublisherAdRequest
 import org.prebid.mobile.*
 
-class PrebidBannerView(private val context: Context, id: Int, messenger: BinaryMessenger) :PlatformView, MethodChannel.MethodCallHandler {
-    private var container: ViewGroup?
+
+/**
+ * Banner of Google Ad Manger.
+ */
+
+class PrebidBannerView(private val context: Context, id: Int, messenger: BinaryMessenger) : PlatformView,
+        MethodChannel.MethodCallHandler {
+    private val container: ViewGroup?
+    internal var adUnit: AdUnit? = null
     private var publisherAdView: PublisherAdView? = null
-    private var adUnit: AdUnit? = null
+
     private val channel = MethodChannel(messenger, "plugins.ercadev.se/prebid_mobile_flutter/banner/$id")
 
     init {
         channel.setMethodCallHandler(this)
-        Host.CUSTOM.hostUrl = "https://lwadm.com/openrtb2/auction"
-        PrebidMobile.setPbsDebug(true)
-        PrebidMobile.setPrebidServerHost(Host.CUSTOM)
-        PrebidMobile.setApplicationContext(context)
-        PrebidMobile.setPrebidServerAccountId("8a84dd34-ea31-43c5-96e5-cd8de12e5ea6")
         container = LinearLayout(context).apply {
             orientation = LinearLayout.VERTICAL
             layoutParams = LinearLayout.LayoutParams(
@@ -41,16 +47,11 @@ class PrebidBannerView(private val context: Context, id: Int, messenger: BinaryM
 
     }
 
+
     override fun getView() = container
+
     override fun dispose() {
-        publisherAdView?.pause()
-        publisherAdView?.adListener = null
-        publisherAdView?.destroy()
-        val parent = publisherAdView?.parent
-        if (parent is ViewGroup) {
-            parent.removeView(publisherAdView)
-        }
-        container?.removeAllViews()
+
         channel.setMethodCallHandler(null)
     }
 
@@ -60,23 +61,45 @@ class PrebidBannerView(private val context: Context, id: Int, messenger: BinaryM
             else -> result.notImplemented()
         }
     }
-    private fun load(call: MethodCall, result: MethodChannel.Result) {
-        Log.v("Loading ads",PrebidMobile.getPbsDebug().toString())
 
-        val builder = PublisherAdRequest.Builder()
-        val publisherAdRequest = builder.build()
-       // var bannerUnit = BannerAdUnit("8a84dd34-ea31-43c5-96e5-cd8de12e5ea6",320,320)
-        adUnit = BannerAdUnit("8a84dd34-ea31-43c5-96e5-cd8de12e5ea6",320,320)
-        this.publisherAdView = PublisherAdView(context)
-        publisherAdView?.adUnitId = "/3953516/leeads-test/apptestfotbollsthlm"
+    private fun load(call: MethodCall, result: MethodChannel.Result) {
+        val arguments: Map<String, Any> = call.arguments()
+        val adUnitId = arguments["adUnitId"] as String
+        val publisherId = arguments["publisherId"] as String
+        val serverHost = arguments["serverHost"] as String
+        val configId = arguments["configId"] as String
+        val adHeight = arguments["adHeight"] as Double
+        val adWidth = arguments["adWidth"] as Double
+        Log.v("Hello", "hello")
+        Host.CUSTOM.hostUrl = serverHost;
+        PrebidMobile.setPrebidServerHost(Host.CUSTOM);
+        MobileAds.initialize(context)
+        PrebidMobile.setPrebidServerAccountId(publisherId);
+        PrebidMobile.setApplicationContext(context)
+        container?.removeAllViews()
+        publisherAdView?.destroy()
+
+        var builder = PublisherAdRequest.Builder()
+        this.publisherAdView = PublisherAdView(context);
+        adUnit = BannerAdUnit(configId, adWidth.toInt(),adHeight.toInt())
+        publisherAdView?.adUnitId = adUnitId
         publisherAdView?.setAdSizes(AdSize(320,320))
         publisherAdView?.visibility = View.VISIBLE
         container?.addView(publisherAdView)
+        val publisherAdRequest = builder.build()
 
-        adUnit!!.fetchDemand(builder) { resultCode ->
-            Log.v("Resultcode from prebid", resultCode.name)
-            publisherAdView?.loadAd(builder.build())
-        }
-
+        adUnit!!.fetchDemand(builder, object : OnCompleteListener {
+            override fun onComplete(resultCode: ResultCode) {
+                Log.v("prebid result", resultCode.toString())
+                publisherAdView?.loadAd(builder.build());
+            }
+        })
+        publisherAdView?.loadAd(publisherAdRequest)
+        result.success(1)
     }
+
+
+
+
+
 }
