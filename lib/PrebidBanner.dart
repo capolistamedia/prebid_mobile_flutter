@@ -13,13 +13,13 @@ class _PrebidBannerState extends State<PrebidBanner> {
   DFPBannerViewController _controller;
   @override
   Widget build(BuildContext context) {
-    return SizedBox(height: 300, width: 100, child: _build(context));
+    return Container(child: SizedBox(height: 320, width: 320, child: _build(context)));
   }
 
   Widget _build(BuildContext context) {
     if (Platform.isAndroid) {
       return AndroidView(
-        viewType: 'plugins.ercutveckling.se/prebid_mobile_flutter/banner',
+        viewType: 'plugins.ercadev.se/prebid_mobile_flutter/banner',
         onPlatformViewCreated: _onPlatformViewCreated,
       );
     } else if (Platform.isIOS) {
@@ -47,8 +47,9 @@ class DFPBannerViewController {
     this.onAdViewCreated,
     this.customTargeting,
     int id,
-  }) : _channel = MethodChannel(
-            'plugins.ercutveckling.se/prebid_mobile_flutter/banner/$id');
+  }) : _channel = MethodChannel(Platform.isIOS
+            ? 'plugins.ercutveckling.se/prebid_mobile_flutter/banner/$id'
+            : 'plugins.ercadev.se/prebid_mobile_flutter/banner/$id');
 
   final MethodChannel _channel;
 

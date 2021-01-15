@@ -25,11 +25,19 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Plugin example app'),
-        ),
-        body: ListView(children: [PrebidBanner()]),
-      ),
+          appBar: AppBar(
+            title: const Text('Plugin example app'),
+          ),
+          body: ListView(children: [
+            Column(children: [
+              ListTile(title: Text("THIS IS AN ARTICLE")),
+              PrebidBanner(),
+              ListTile(title: Text("THIS IS AN ARTICLE")),
+              ListTile(title: Text("THIS IS AN ARTICLE")),
+              ListTile(title: Text("THIS IS AN ARTICLE")),
+              ListTile(title: Text("THIS IS AN ARTICLE")),
+            ])
+          ])),
     );
   }
 }

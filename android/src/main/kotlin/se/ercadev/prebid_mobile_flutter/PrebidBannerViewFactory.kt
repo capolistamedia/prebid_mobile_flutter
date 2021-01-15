@@ -9,7 +9,7 @@ import io.flutter.plugin.platform.PlatformViewFactory
 /**
  * Factory class of Banner for Android.
  */
-class PrebidBannerFactory(private val messenger: BinaryMessenger) :
+class PrebidBannerViewFactory(private val messenger: BinaryMessenger) :
         PlatformViewFactory(StandardMessageCodec.INSTANCE) {
 
 

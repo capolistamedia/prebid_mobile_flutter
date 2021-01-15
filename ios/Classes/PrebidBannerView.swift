@@ -1,7 +1,10 @@
 import Foundation
-//import GoogleMobileAds
+import GoogleMobileAds
+import PrebidMobile
+import AppTrackingTransparency
+import AdSupport
 
-class PrebidBannerView: NSObject, FlutterPlatformView {
+class PrebidBannerView: NSObject, FlutterPlatformView, GADBannerViewDelegate {
     private var container: UIView!
     private let channel: FlutterMethodChannel!
 
@@ -32,17 +35,53 @@ class PrebidBannerView: NSObject, FlutterPlatformView {
     }
 
     private func load(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
-let nativeLabel = UILabel()
-        nativeLabel.text = "Native text from iOS"
-        nativeLabel.textColor = UIColor.black
-        container.backgroundColor = UIColor.green
-        nativeLabel.textAlignment = .center
-        nativeLabel.frame = CGRect(x: 0, y: 0, width: 180, height: 48.0)
-        addBannerViewToView(nativeLabel);
+        Prebid.shared.prebidServerAccountId = "8a84dd34-ea31-43c5-96e5-cd8de12e5ea6"
+        do {
+            try Prebid.shared.setCustomPrebidServer(url: "http://lwadm.com/openrtb2/auction")
+        } catch  {
+            print("ERROR")
+        }
+ 
+        let adSize = CGSize(width: 320, height: 320)
+        let bannerUnit = BannerAdUnit(configId: "fotbollsthlm_mobile-mobil-1", size: adSize)
+        let bannerView = DFPBannerView(adSize: GADAdSizeFromCGSize(adSize))
+        let request = DFPRequest()
+        bannerView.adUnitID = "/3953516/leeads-test/apptestfotbollsthlm"
+        bannerView.delegate = self
+        bannerView.rootViewController = UIApplication.shared.delegate!.window!!.rootViewController!
+        addBannerViewToView(bannerView)
+        bannerView.backgroundColor = UIColor.green
+        
+        bannerUnit.fetchDemand(adObject:request) {(ResultCode ) in
+            print("Prebid demand fetch for Google Ad Manager \(ResultCode.name())")
+            if #available(iOS 14, *) {
+               ATTrackingManager.requestTrackingAuthorization(completionHandler: { status in
+                bannerView.load(request)
+               })
+            } else {
+                bannerView.load(request)
+            }
+        }
+   //     bannerView.load(request)
         result(nil)
     }
 
-    private func addBannerViewToView(_ bannerView: UILabel) {
+    private func addBannerViewToView(_ bannerView: DFPBannerView) {
         container.addSubview(bannerView)
+        container.addConstraints([NSLayoutConstraint(item: bannerView,
+                                                        attribute: .centerX,
+                                                        relatedBy: .equal,
+                                                        toItem: container,
+                                                        attribute: .centerX,
+                                                        multiplier: 1,
+                                                        constant: 0),
+                                     NSLayoutConstraint(item: bannerView,
+                                                        attribute: .centerY,
+                                                        relatedBy: .equal,
+                                                        toItem: container,
+                                                        attribute: .centerY,
+                                                        multiplier: 1,
+                                                        constant: 0)])
     }
 }
+
