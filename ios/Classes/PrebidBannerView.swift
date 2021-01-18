@@ -61,6 +61,7 @@ class PrebidBannerView: NSObject, FlutterPlatformView, GADBannerViewDelegate {
         bannerView.backgroundColor = UIColor.green
         
         bannerUnit.fetchDemand(adObject:request) {(ResultCode ) in
+            self.channel.invokeMethod("demandFetched", arguments: ["name": ResultCode.name()])
             print("Prebid demand fetch for Google Ad Manager \(ResultCode.name())")
             if #available(iOS 14, *) {
                ATTrackingManager.requestTrackingAuthorization(completionHandler: { status in

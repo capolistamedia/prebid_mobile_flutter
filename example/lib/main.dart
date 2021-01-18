@@ -33,8 +33,11 @@ class _MyAppState extends State<MyApp> {
                 adSize: PrebidAdSize(320, 320),
                 publisherId: "8a84dd34-ea31-43c5-96e5-cd8de12e5ea6",
                 adUnitId: "/3953516/leeads-test/apptestfotbollsthlm",
-                configId: "fotbollsthlm_mobile-mobil-1",
+                configId: "fotbollsthlm_desktop-app-1-ios",
                 serverHost: "http://lwadm.com/openrtb2/auction",
+                onDemandFetched: (String status) {
+                  print("Prebid status: " + status);
+                },
               ),
               ListTile(title: Text("THIS IS AN ARTICLE")),
               ListTile(title: Text("THIS IS AN ARTICLE")),

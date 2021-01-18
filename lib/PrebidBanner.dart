@@ -9,6 +9,7 @@ class PrebidBanner extends StatefulWidget {
   final String configId;
   final String adUnitId;
   final String serverHost;
+  final void Function(String status) onDemandFetched;
   /**
    * Size
    * publisherID
@@ -16,7 +17,12 @@ class PrebidBanner extends StatefulWidget {
    * adUnitId
    */
   PrebidBanner(
-      {@required this.adSize, this.adUnitId, this.configId, this.publisherId, this.serverHost});
+      {@required this.adSize,
+      @required this.adUnitId,
+      @required this.configId,
+      @required this.publisherId,
+      @required this.serverHost,
+      @required this.onDemandFetched});
 
   @override
   _PrebidBannerState createState() => _PrebidBannerState();
@@ -52,8 +58,10 @@ class _PrebidBannerState extends State<PrebidBanner> {
         adSize: widget.adSize,
         configId: widget.configId,
         adUnitId: widget.adUnitId,
-        serverHost: widget.serverHost);
-    _controller._load();
+        serverHost: widget.serverHost,
+        onDemandFetched: widget.onDemandFetched);
+
+    _controller._init();
     print("Platform view creatd");
   }
 }
@@ -66,6 +74,7 @@ class DFPBannerViewController {
   final String configId;
   final String adUnitId;
   final String serverHost;
+  final void Function(String status) onDemandFetched;
 
   DFPBannerViewController._internal({
     this.onAdViewCreated,
@@ -75,6 +84,7 @@ class DFPBannerViewController {
     this.configId,
     this.serverHost,
     this.publisherId,
+    this.onDemandFetched,
     int id,
   }) : _channel = MethodChannel(Platform.isIOS
             ? 'plugins.ercutveckling.se/prebid_mobile_flutter/banner/$id'
@@ -83,6 +93,11 @@ class DFPBannerViewController {
   final MethodChannel _channel;
 
   Future<void> reload() {
+    return _load();
+  }
+
+  Future<void> _init() {
+    _channel.setMethodCallHandler(_handler);
     return _load();
   }
 
@@ -95,5 +110,13 @@ class DFPBannerViewController {
       "adUnitId": this.adUnitId,
       "serverHost": this.serverHost
     });
+  }
+
+  Future<void> _handler(MethodCall call) {
+    switch (call.method) {
+      case "demandFetched":
+        onDemandFetched(call.arguments['name']);
+        break;
+    }
   }
 }

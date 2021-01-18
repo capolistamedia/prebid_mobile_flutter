@@ -90,6 +90,7 @@ class PrebidBannerView(private val context: Context, id: Int, messenger: BinaryM
 
         adUnit!!.fetchDemand(builder, object : OnCompleteListener {
             override fun onComplete(resultCode: ResultCode) {
+                channel.invokeMethod("demandFetched", mapOf("name" to resultCode.toString()))
                 Log.v("prebid result", resultCode.toString())
                 publisherAdView?.loadAd(builder.build());
             }
