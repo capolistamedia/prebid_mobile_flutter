@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:prebid_mobile_flutter/prebid_mobile_flutter.dart';
@@ -10,6 +11,7 @@ class PrebidBanner extends StatefulWidget {
   final String adUnitId;
   final String serverHost;
   final void Function(String status) onDemandFetched;
+  final Color backgroundColor;
   /**
    * Size
    * publisherID
@@ -22,7 +24,8 @@ class PrebidBanner extends StatefulWidget {
       @required this.configId,
       @required this.publisherId,
       @required this.serverHost,
-      @required this.onDemandFetched});
+      @required this.onDemandFetched,
+      this.backgroundColor});
 
   @override
   _PrebidBannerState createState() => _PrebidBannerState();
@@ -32,7 +35,9 @@ class _PrebidBannerState extends State<PrebidBanner> {
   DFPBannerViewController _controller;
   @override
   Widget build(BuildContext context) {
-    return Container(child: SizedBox(height: 320, width: 320, child: _build(context)));
+    return Container(
+        color: widget.backgroundColor ?? Colors.grey[300],
+        child: SizedBox(height: 320, width: 320, child: _build(context)));
   }
 
   Widget _build(BuildContext context) {

@@ -58,7 +58,7 @@ class PrebidBannerView: NSObject, FlutterPlatformView, GADBannerViewDelegate {
         bannerView.delegate = self
         bannerView.rootViewController = UIApplication.shared.delegate!.window!!.rootViewController!
         addBannerViewToView(bannerView)
-        bannerView.backgroundColor = UIColor.green
+        bannerView.backgroundColor = UIColor.clear
         
         bannerUnit.fetchDemand(adObject:request) {(ResultCode ) in
             self.channel.invokeMethod("demandFetched", arguments: ["name": ResultCode.name()])

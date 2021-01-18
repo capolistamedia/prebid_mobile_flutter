@@ -30,6 +30,7 @@ class _MyAppState extends State<MyApp> {
             Column(children: [
               ListTile(title: Text("THIS IS AN ARTICLE")),
               PrebidBanner(
+                backgroundColor: Colors.green,
                 adSize: PrebidAdSize(320, 320),
                 publisherId: "8a84dd34-ea31-43c5-96e5-cd8de12e5ea6",
                 adUnitId: "/3953516/leeads-test/apptestfotbollsthlm",

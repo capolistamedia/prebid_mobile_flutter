@@ -83,7 +83,7 @@ class PrebidBannerView(private val context: Context, id: Int, messenger: BinaryM
         this.publisherAdView = PublisherAdView(context);
         adUnit = BannerAdUnit(configId, adWidth.toInt(),adHeight.toInt())
         publisherAdView?.adUnitId = adUnitId
-        publisherAdView?.setAdSizes(AdSize(320,320))
+        publisherAdView?.setAdSizes(AdSize(dWidth.toInt(),adHeight.toInt()))
         publisherAdView?.visibility = View.VISIBLE
         container?.addView(publisherAdView)
         val publisherAdRequest = builder.build()
