@@ -62,7 +62,6 @@ class PrebidBannerView: NSObject, FlutterPlatformView, GADBannerViewDelegate {
         
         bannerUnit.fetchDemand(adObject:request) {(ResultCode ) in
             self.channel.invokeMethod("demandFetched", arguments: ["name": ResultCode.name()])
-            print("Prebid demand fetch for Google Ad Manager \(ResultCode.name())")
             if #available(iOS 14, *) {
                ATTrackingManager.requestTrackingAuthorization(completionHandler: { status in
                 bannerView.load(request)
@@ -94,7 +93,6 @@ class PrebidBannerView: NSObject, FlutterPlatformView, GADBannerViewDelegate {
     }
 
     func adViewDidReceiveAd(_ bannerView: GADBannerView) {
-                print("view loaded")
                 AdViewUtils.findPrebidCreativeSize(bannerView,
                                             success: { (size) in
                                                 guard let bannerView = bannerView as? DFPBannerView else {
