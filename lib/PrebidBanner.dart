@@ -24,7 +24,7 @@ class PrebidBanner extends StatefulWidget {
       @required this.configId,
       @required this.publisherId,
       @required this.serverHost,
-      @required this.onDemandFetched,
+      this.onDemandFetched,
       this.backgroundColor});
 
   @override
@@ -37,7 +37,8 @@ class _PrebidBannerState extends State<PrebidBanner> {
   Widget build(BuildContext context) {
     return Container(
         color: widget.backgroundColor ?? Colors.grey[300],
-        child: SizedBox(height: 320, width: 320, child: _build(context)));
+        child: SizedBox(
+            height: widget.adSize.height, width: widget.adSize.width, child: _build(context)));
   }
 
   Widget _build(BuildContext context) {
@@ -67,7 +68,6 @@ class _PrebidBannerState extends State<PrebidBanner> {
         onDemandFetched: widget.onDemandFetched);
 
     _controller._init();
-    print("Platform view creatd");
   }
 }
 

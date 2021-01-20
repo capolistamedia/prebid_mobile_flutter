@@ -92,5 +92,22 @@ class PrebidBannerView: NSObject, FlutterPlatformView, GADBannerViewDelegate {
                                                         multiplier: 1,
                                                         constant: 0)])
     }
+
+    func adViewDidReceiveAd(_ bannerView: GADBannerView) {
+                print("view loaded")
+                AdViewUtils.findPrebidCreativeSize(bannerView,
+                                            success: { (size) in
+                                                guard let bannerView = bannerView as? DFPBannerView else {
+                                                    return
+                                                }
+
+                                                bannerView.resize(GADAdSizeFromCGSize(size))
+
+        },
+                                            failure: { (error) in
+                                                print("error: \(error)")
+
+        })
+    }
 }
 

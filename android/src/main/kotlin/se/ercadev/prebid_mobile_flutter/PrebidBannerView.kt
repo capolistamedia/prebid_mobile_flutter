@@ -16,10 +16,13 @@ import android.graphics.Color
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
+import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.ads.doubleclick.PublisherAdRequest
 import org.prebid.mobile.*
+import org.prebid.mobile.addendum.AdViewUtils
+import org.prebid.mobile.addendum.PbFindSizeError
 
 
 /**
@@ -70,7 +73,6 @@ class PrebidBannerView(private val context: Context, id: Int, messenger: BinaryM
         val configId = arguments["configId"] as String
         val adHeight = arguments["adHeight"] as Double
         val adWidth = arguments["adWidth"] as Double
-        Log.v("Hello", "hello")
         Host.CUSTOM.hostUrl = serverHost;
         PrebidMobile.setPrebidServerHost(Host.CUSTOM);
         MobileAds.initialize(context)
@@ -83,7 +85,7 @@ class PrebidBannerView(private val context: Context, id: Int, messenger: BinaryM
         this.publisherAdView = PublisherAdView(context);
         adUnit = BannerAdUnit(configId, adWidth.toInt(),adHeight.toInt())
         publisherAdView?.adUnitId = adUnitId
-        publisherAdView?.setAdSizes(AdSize(dWidth.toInt(),adHeight.toInt()))
+        publisherAdView?.setAdSizes(AdSize(adWidth.toInt(),adHeight.toInt()))
         publisherAdView?.visibility = View.VISIBLE
         container?.addView(publisherAdView)
         val publisherAdRequest = builder.build()
@@ -91,12 +93,29 @@ class PrebidBannerView(private val context: Context, id: Int, messenger: BinaryM
         adUnit!!.fetchDemand(builder, object : OnCompleteListener {
             override fun onComplete(resultCode: ResultCode) {
                 channel.invokeMethod("demandFetched", mapOf("name" to resultCode.toString()))
-                Log.v("prebid result", resultCode.toString())
                 publisherAdView?.loadAd(builder.build());
             }
         })
-        publisherAdView?.loadAd(publisherAdRequest)
-        result.success(1)
+
+        publisherAdView?.setAdListener(object: AdListener() {
+            override fun onAdLoaded() {
+                super.onAdLoaded()
+
+                AdViewUtils.findPrebidCreativeSize(publisherAdView, object : AdViewUtils.PbFindSizeListener {
+                    override fun success(width: Int, height: Int){
+                        publisherAdView?.setAdSizes(AdSize(width, height))
+                    }
+
+                    override fun failure(error: PbFindSizeError) {
+                        Log.d("Error", "error :$error")
+                    }
+                })
+            }
+        })
+
+
+
+
     }
 
 
