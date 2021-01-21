@@ -32,10 +32,10 @@ class _MyAppState extends State<MyApp> {
               PrebidBanner(
                 backgroundColor: Colors.green,
                 adSize: PrebidAdSize(320, 320),
-                publisherId: "8a84dd34-ea31-43c5-96e5-cd8de12e5ea6",
-                adUnitId: "/3953516/leeads-test/apptestfotbollsthlm",
-                configId: "fotbollsthlm_desktop-app-1-ios",
-                serverHost: "http://lwadm.com/openrtb2/auction",
+                publisherId: "xxx",
+                adUnitId: "xxx",
+                configId: "xxx",
+                serverHost: "xxx",
                 onDemandFetched: (String status) {
                   print("Prebid status: " + status);
                 },
