@@ -1,15 +1,19 @@
 # prebid_mobile_flutter
 
-A new flutter plugin project.
+## This is an unofficial flutter plugin for Prebid Mobile SDK
 
-## Getting Started
+This plugin will display header bidding ads through the native [Prebid Mobile SDK](https://docs.prebid.org/prebid-mobile/prebid-mobile.html)
 
-This project is a starting point for a Flutter
-[plug-in package](https://flutter.dev/developing-packages/),
-a specialized package that includes platform-specific implementation code for
-Android and/or iOS.
+## Features
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### Ad renderer
+:white_check_mark: - Google Ad Manager
+
+:x: - MuPub
+
+
+### Ad types
+:white_check_mark: - Banner Ads
+
+:x: - Interstitial ads
 
