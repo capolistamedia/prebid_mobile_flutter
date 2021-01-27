@@ -1,4 +1,4 @@
-package se.ercadev.prebid_mobile_flutter
+package se.capolista.prebid_mobile_flutter
 
 import android.content.Context
 import io.flutter.plugin.common.BinaryMessenger

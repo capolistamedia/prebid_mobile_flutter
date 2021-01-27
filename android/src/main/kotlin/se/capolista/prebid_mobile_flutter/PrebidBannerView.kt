@@ -1,4 +1,4 @@
-package se.ercadev.prebid_mobile_flutter
+package se.capolista.prebid_mobile_flutter
 
 
 
@@ -35,7 +35,7 @@ class PrebidBannerView(private val context: Context, id: Int, messenger: BinaryM
     internal var adUnit: AdUnit? = null
     private var publisherAdView: PublisherAdView? = null
 
-    private val channel = MethodChannel(messenger, "plugins.ercadev.se/prebid_mobile_flutter/banner/$id")
+    private val channel = MethodChannel(messenger, "plugins.capolista.se/prebid_mobile_flutter/banner/$id")
 
     init {
         channel.setMethodCallHandler(this)

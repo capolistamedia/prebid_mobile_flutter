@@ -1,4 +1,4 @@
-group 'se.ercadev.prebid_mobile_flutter'
+group 'se.capolista.prebid_mobile_flutter'
 version '1.0-SNAPSHOT'
 
 buildscript {

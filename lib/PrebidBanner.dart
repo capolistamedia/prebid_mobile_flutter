@@ -38,18 +38,20 @@ class _PrebidBannerState extends State<PrebidBanner> {
     return Container(
         color: widget.backgroundColor ?? Colors.grey[300],
         child: SizedBox(
-            height: widget.adSize.height, width: widget.adSize.width, child: _build(context)));
+            height: widget.adSize.height,
+            width: widget.adSize.width,
+            child: _build(context)));
   }
 
   Widget _build(BuildContext context) {
     if (Platform.isAndroid) {
       return AndroidView(
-        viewType: 'plugins.ercadev.se/prebid_mobile_flutter/banner',
+        viewType: 'plugins.capolista.se/prebid_mobile_flutter/banner',
         onPlatformViewCreated: _onPlatformViewCreated,
       );
     } else if (Platform.isIOS) {
       return UiKitView(
-        viewType: 'plugins.ercutveckling.se/prebid_mobile_flutter/banner',
+        viewType: 'plugins.capolista.se/prebid_mobile_flutter/banner',
         onPlatformViewCreated: _onPlatformViewCreated,
       );
     }
@@ -92,8 +94,8 @@ class DFPBannerViewController {
     this.onDemandFetched,
     int id,
   }) : _channel = MethodChannel(Platform.isIOS
-            ? 'plugins.ercutveckling.se/prebid_mobile_flutter/banner/$id'
-            : 'plugins.ercadev.se/prebid_mobile_flutter/banner/$id');
+            ? 'plugins.capolista.se/prebid_mobile_flutter/banner/$id'
+            : 'plugins.capolista.se/prebid_mobile_flutter/banner/$id');
 
   final MethodChannel _channel;
 
