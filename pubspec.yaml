@@ -1,8 +1,8 @@
 name: prebid_mobile_flutter
 description: Plugin for showing ads from Prebid Mobile SDK
 version: 0.0.1
-author:
-homepage:
+homepage: https://github.com/capolistamedia/prebid_mobile_flutter
+repository: https://github.com/capolistamedia/prebid_mobile_flutter
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
