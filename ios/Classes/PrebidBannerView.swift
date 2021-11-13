@@ -49,11 +49,11 @@ class PrebidBannerView: NSObject, FlutterPlatformView, GADBannerViewDelegate {
         } catch  {
             print("ERROR")
         }
- 
+        
         let adSize = CGSize(width: adWidth, height: adHeight)
         let bannerUnit = BannerAdUnit(configId: configId, size: adSize)
-        let bannerView = DFPBannerView(adSize: GADAdSizeFromCGSize(adSize))
-        let request = DFPRequest()
+        let bannerView = GADBannerView(adSize: GADAdSizeFromCGSize(adSize))
+        let request = GADRequest()
         bannerView.adUnitID = adUnitId
         bannerView.delegate = self
         bannerView.rootViewController = UIApplication.shared.delegate!.window!!.rootViewController!
@@ -74,7 +74,7 @@ class PrebidBannerView: NSObject, FlutterPlatformView, GADBannerViewDelegate {
         result(nil)
     }
 
-    private func addBannerViewToView(_ bannerView: DFPBannerView) {
+    private func addBannerViewToView(_ bannerView: GADBannerView) {
         container.addSubview(bannerView)
         container.addConstraints([NSLayoutConstraint(item: bannerView,
                                                         attribute: .centerX,
@@ -95,11 +95,11 @@ class PrebidBannerView: NSObject, FlutterPlatformView, GADBannerViewDelegate {
     func adViewDidReceiveAd(_ bannerView: GADBannerView) {
                 AdViewUtils.findPrebidCreativeSize(bannerView,
                                             success: { (size) in
-                                                guard let bannerView = bannerView as? DFPBannerView else {
+                                                guard let bannerView = bannerView as? GADBannerView else {
                                                     return
                                                 }
-
-                                                bannerView.resize(GADAdSizeFromCGSize(size))
+                    
+                                             
 
         },
                                             failure: { (error) in
