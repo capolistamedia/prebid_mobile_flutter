@@ -18,7 +18,7 @@ A new flutter plugin project.
   s.dependency 'Google-Mobile-Ads-SDK'
   s.dependency 'PrebidMobile'
   s.static_framework = true
-  s.platform = :ios, '9.0'
+  s.platform = :ios, '10.0'
 
   # Flutter.framework does not contain a i386 slice.
   s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES', 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386' }
