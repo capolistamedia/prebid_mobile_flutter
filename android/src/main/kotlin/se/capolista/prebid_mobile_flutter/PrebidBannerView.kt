@@ -66,7 +66,7 @@ class PrebidBannerView(private val context: Context, id: Int, messenger: BinaryM
     }
 
     private fun load(call: MethodCall, result: MethodChannel.Result) {
-        val arguments: Map<String, Any> = call.arguments()
+        val arguments = call.arguments as Map<*, *>
         val adUnitId = arguments["adUnitId"] as String
         val publisherId = arguments["publisherId"] as String
         val serverHost = arguments["serverHost"] as String
