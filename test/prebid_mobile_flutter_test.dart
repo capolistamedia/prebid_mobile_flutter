@@ -1,6 +1,5 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:prebid_mobile_flutter/prebid_mobile_flutter.dart';
 
 void main() {
   const MethodChannel channel = MethodChannel('prebid_mobile_flutter');
